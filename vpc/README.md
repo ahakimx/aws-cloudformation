@@ -6,6 +6,46 @@ This section is create vpc and internet gateway then attach internet gateway to 
 
 *note*: when create an AWS account, a "default" VPC is created
 
+Parameters:
+```
+Parameters:
+
+  EnvironmentName:
+    Description: An environment name for VPC
+    Type: String
+
+  VpcCIDR:
+    Description: Enter the IP range CIDR notation
+    Type: String
+    Default: 10.0.0.0/16
+```
+
+Resource for this stack is `VPC`, `InternetGateway` and `InternetGatewayAttachment`:
+```
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCIDR
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName
+
+  igwName:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName
+
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref igwName
+```
+
 Run script to create a VPC:
 
 ```
@@ -17,6 +57,18 @@ Run script to create a VPC:
 *note*: default VPC already has an IGW attached.
 
 To update resources or parameter:
+
+Edit `ParameterValue` on `vpc-parameters.json` file, example:
+```
+[
+    {
+        "ParameterKey": "EnvironmentName",
+        "ParameterValue": "UpdateProjectName"
+    }
+]
+```
+
+Update stack
 
 ```
 ./update.sh vpc vpc.yml vpc-parameters.json
