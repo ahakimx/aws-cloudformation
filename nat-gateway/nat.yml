@@ -95,3 +95,33 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${EnvironmentName} Private Subnet (AZ2)
+
+  NatGetaway1EIP:
+    Type: AWS::EC2::EIP
+    DependsOn: igwName
+    Properties:
+      Domain: vpc
+
+  NatGetaway2EIP:
+    Type: AWS::EC2::EIP
+    DependsOn: igwName
+    Properties:
+      Domain: vpc
+  
+  NatGateway1:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt NatGetaway1EIP.AllocationId
+      SubnetId: !Ref PublicSubnet1
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Public NatGateway (AZ1)
+
+  NatGateway2:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt NatGetaway2EIP.AllocationId
+      SubnetId: !Ref PublicSubnet2
+      Tags:
+        - Key: Name
+          Value: !Sub ${EnvironmentName} Public NatGateway (AZ2)
