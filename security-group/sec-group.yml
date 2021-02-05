@@ -203,9 +203,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Allow http to our load balancer
-      VpcId:
-        Fn::ImportValue:
-          !Sub "${EnvironmentName}-VPCID"
+      VpcId: !Ref VPC
       SecurityGroupIngress:
       - IpProtocol: tcp
         FromPort: 80
@@ -220,9 +218,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Allow http to our hosts and SSH from local only
-      VpcId:
-        Fn::ImporValue:
-          !Sub "${EnvironmentName}-VPCID"
+      VpcId: !Ref VPC
       SecurityGroupIngress:
       - IpProtocol: tcp
         FromPort: 8080
@@ -230,7 +226,7 @@ Resources:
         CidrIp: 0.0.0.0/0
       - IpProtocol: tcp
         FromPort: 22
-        ToPort:22
+        ToPort: 22
         CidrIp: 0.0.0.0/0
       SecurityGroupEgress:
       - IpProtocol: tcp
