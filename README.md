@@ -9,3 +9,6 @@ This repository is for learn Infrastucture as Code with AWS cloudformation.
 ```
 aws cloudformation create-stack --stack-name $1 --template-body file://$2 --parameters file://$3 --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM" --region=us-west-2
 ```
+
+- Deploy Nat Gateway:
+    `./create.sh my-vpc nat-gateway/nat.yml nat-gateway/nat-parameters.json`
